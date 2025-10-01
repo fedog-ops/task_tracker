@@ -4,6 +4,7 @@ import "./globals.css";
 import { homePath, ticketsPath } from "../paths";
 import { buttonVariants } from "../components/ui/button";
 import Link from "next/link";
+import { LucideLamp } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,10 +38,13 @@ export default function RootLayout({
         flex justify-between py-2.5 px-2.5 w-full">
           <div>
               <Link 
-              href={homePath()} className={buttonVariants({ variant: "outline" })}>Home</Link>
+              href={homePath()} className={buttonVariants({ variant: "outline" })}>
+                <span><LucideLamp/></span>
+                <span>TaskTracker</span>
+              </Link>
           </div>
           <div>
-              <Link href={ticketsPath()} className={buttonVariants({ variant: "outline" })}>Tickets</Link>
+              <Link href={ticketsPath()} className={buttonVariants({ variant: "default" })}>Tickets</Link>
           </div>
         </nav>
         <main className="
