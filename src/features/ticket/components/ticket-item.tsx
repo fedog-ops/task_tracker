@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../../../components/ui/card"
+import clsx from "clsx"
+import { Card, CardHeader, CardTitle, CardContent } from "../../../components/ui/card"
 import { ticketPath } from "../../../paths"
 import { Ticket } from "../types"
 import { TICKET_ICONS } from "../constants"
@@ -8,11 +9,12 @@ import { Button } from "../../../components/ui/button"
 
 type ticketProps = {
     ticket: Ticket
+    isDetail?: boolean
 }
 
-export const TicketItem = ({ ticket }: ticketProps) => {
+export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
     const detailBtn = (
-    <Button variant={"outline"} size="icon" asChild>
+        <Button variant={"outline"} size="icon" asChild>
             <Link href={ticketPath(ticket.id)}>
                 <LucideSquareArrowOutUpRight />
             </Link>
@@ -20,7 +22,11 @@ export const TicketItem = ({ ticket }: ticketProps) => {
     );
 
     return (
-        <div className="w-full max-w-[420px] flex gap-x-1">
+        <div className={clsx("w-full flex gap-x-1",
+            {
+                " max-w-[540px]": isDetail,
+                " max-w-[420px]": !isDetail
+            })}>
             <Card
                 className="w-full"
             >
@@ -33,13 +39,17 @@ export const TicketItem = ({ ticket }: ticketProps) => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <span className="line-clamp-3 whitespace-break-spaces">
+                    <span 
+                        className={clsx("whitespace-break-spaces", { 
+                            "line-clamp-3": !isDetail,
+                        })}
+                    >
                         {ticket.content}
                     </span>
                 </CardContent>
             </Card>
-            
-            <div className="flex flex-col flex-y-1">{detailBtn}</div>
+
+            {!isDetail && <div className="flex flex-col flex-y-1">{detailBtn}</div>}
         </div>
     )
 }

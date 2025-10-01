@@ -1,23 +1,23 @@
 import { initialTickets } from "../../../data";
+import { TicketItem } from "../../../features/ticket/components/ticket-item";
 
 type TicketPageProps = {
-    params: { 
-        ticketId: string };
+    params: {
+        ticketId: string
+    };
 };
 
 const TicketPage = ({ params }: TicketPageProps) => {
-    const ticket = initialTickets.find(t => t.id === params.ticketId);   
+    const ticket = initialTickets.find(t => t.id === params.ticketId);
 
     if (!ticket) {
         return <div>Ticket not found</div>;
     }
-    
+
     return (
-    <div>
-        <h2 className="text-lg">{ticket.title}</h2>
-        <p className="text-lg">{ticket.content}</p>
-        <p className="text-lg">{ticket.status}</p>
-    </div> 
+        <div className="flex justify-center animate-fade-from-top">
+            <TicketItem ticket={ticket} isDetail />
+        </div>
     )
 }
 
