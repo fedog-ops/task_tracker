@@ -11,9 +11,8 @@ type TicketPageProps = {
     };
 };
 
-const TicketPage = ({ params }: TicketPageProps) => {
-    const ticket = initialTickets.find(t => t.id === params.ticketId);
-
+const TicketPage = async ({ params }: TicketPageProps) => {
+    const ticket = await getTicket(params.ticketId);
     if (!ticket) {
         return <Placeholder 
             label="Ticket not found" 
