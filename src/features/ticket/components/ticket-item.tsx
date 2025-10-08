@@ -1,11 +1,12 @@
 import Link from "next/link"
 import clsx from "clsx"
-import { Card, CardHeader, CardTitle, CardContent } from "../../../components/ui/card"
-import { ticketPath } from "../../../paths"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { ticketPath } from "@/paths"
 import { TICKET_ICONS } from "../constants"
-import { LucideSquareArrowOutUpRight } from "lucide-react"
-import { Button } from "../../../components/ui/button"
+import { LucideSquareArrowOutUpRight, LucideTrash } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { Ticket } from "@prisma/client"
+import deleteTicket from "@/app/tickets/actions/delete-ticket";
 
 type ticketProps = {
     ticket: Ticket
@@ -13,12 +14,34 @@ type ticketProps = {
 }
 
 export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
-    const detailBtn = (
+    const detailButton = (
         <Button variant={"outline"} size="icon" asChild>
             <Link href={ticketPath(ticket.id)}>
                 <LucideSquareArrowOutUpRight />
             </Link>
         </Button>
+    );
+
+    // SERVER ACTIONS IN A CLIENT COMPONENT
+
+    // const handleDelete = () => {
+    //     deleteTicket(ticket.id);
+    // }
+
+    // const deleteButton = (
+    //     <Button variant={"outline"} size="icon" onClick={handleDelete}>
+    //         <LucideTrash />
+    //     </Button>
+    // );
+
+    // SERVER ACTIONS IN A SERVER COMPONENT
+
+    const deleteButton = (
+        <form action={deleteTicket.bind(null, ticket.id)}>
+            <Button variant={"outline"} size="icon">
+                <LucideTrash />
+            </Button>
+        </form>
     );
 
     return (
@@ -39,8 +62,8 @@ export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <span 
-                        className={clsx("whitespace-break-spaces", { 
+                    <span
+                        className={clsx("whitespace-break-spaces", {
                             "line-clamp-3": !isDetail,
                         })}
                     >
@@ -48,8 +71,9 @@ export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
                     </span>
                 </CardContent>
             </Card>
-
-            {!isDetail && <div className="flex flex-col flex-y-1">{detailBtn}</div>}
+            <div className="flex flex-col flex-y-1">
+                {isDetail ? deleteButton : detailButton}
+            </div>
         </div>
     )
 }
