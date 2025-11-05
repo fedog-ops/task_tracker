@@ -7,7 +7,6 @@ import { LucidePencil, LucideSquareArrowOutUpRight, LucideTrash } from "lucide-r
 import { Button } from "@/components/ui/button"
 import { Ticket } from "@prisma/client"
 import deleteTicket from "@/app/tickets/actions/delete-ticket";
-import updateTicket from "../../../app/tickets/actions/update-ticket"
 
 type ticketProps = {
     ticket: Ticket
@@ -30,14 +29,6 @@ export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
             </Button>
         </form>
     );
-
-    // const updateButton = (
-    //     <form action={updateTicket.bind(null, ticket.id)}>
-    //         <Button variant={"outline"} size="icon" >
-    //             <LucidePencil />
-    //         </Button>
-    //     </form>
-    // );
 
     const editButton = (
         <Button variant={"outline"} size="icon" asChild>
