@@ -1,12 +1,13 @@
 import Link from "next/link"
 import clsx from "clsx"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { ticketPath } from "@/paths"
+import { editTicketPath, ticketPath, ticketsPath } from "@/paths"
 import { TICKET_ICONS } from "../constants"
-import { LucideSquareArrowOutUpRight, LucideTrash } from "lucide-react"
+import { LucidePencil, LucideSquareArrowOutUpRight, LucideTrash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Ticket } from "@prisma/client"
 import deleteTicket from "@/app/tickets/actions/delete-ticket";
+import updateTicket from "../../../app/tickets/actions/update-ticket"
 
 type ticketProps = {
     ticket: Ticket
@@ -15,26 +16,12 @@ type ticketProps = {
 
 export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
     const detailButton = (
-        <Button variant={"outline"} size="icon" asChild>
+        <Button variant={"outline"} size="icon">
             <Link prefetch href={ticketPath(ticket.id)}>
                 <LucideSquareArrowOutUpRight />
             </Link>
         </Button>
     );
-
-    // SERVER ACTIONS IN A CLIENT COMPONENT
-
-    // const handleDelete = () => {
-    //     deleteTicket(ticket.id);
-    // }
-
-    // const deleteButton = (
-    //     <Button variant={"outline"} size="icon" onClick={handleDelete}>
-    //         <LucideTrash />
-    //     </Button>
-    // );
-
-    // SERVER ACTIONS IN A SERVER COMPONENT
 
     const deleteButton = (
         <form action={deleteTicket.bind(null, ticket.id)}>
@@ -42,6 +29,22 @@ export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
                 <LucideTrash />
             </Button>
         </form>
+    );
+
+    // const updateButton = (
+    //     <form action={updateTicket.bind(null, ticket.id)}>
+    //         <Button variant={"outline"} size="icon" >
+    //             <LucidePencil />
+    //         </Button>
+    //     </form>
+    // );
+
+    const editButton = (
+        <Button variant={"outline"} size="icon" asChild>
+            <Link prefetch href={editTicketPath(ticket.id)}>
+                <LucidePencil />
+            </Link>
+        </Button>
     );
 
     return (
@@ -72,7 +75,10 @@ export const TicketItem = ({ ticket, isDetail }: ticketProps) => {
                 </CardContent>
             </Card>
             <div className="flex flex-col flex-y-1">
-                {isDetail ? deleteButton : detailButton}
+                <>
+                    {isDetail ? deleteButton : detailButton}
+                    {editButton}
+                </>
             </div>
         </div>
     )
