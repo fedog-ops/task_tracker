@@ -1,10 +1,12 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Ticket } from "@prisma/client";
-import { Button } from "../../../components/ui/button";
-import { upsertTicket } from "../../../app/tickets/actions/upsert-ticket";
+import { upsertTicket } from "@/app/tickets/actions/upsert-ticket";
+import {SubmitButton} from "@/components/form/submit-button";
 
 type TicketUpsertFormProps = {
   ticket?: Ticket;
@@ -22,7 +24,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <Label htmlFor="content">Content</Label>
       <Textarea id="content" name="content" defaultValue={ticket?.content} />
 
-      <Button type="submit">{ticket ? "Edit" : "Create"}</Button>
+      <SubmitButton label={ticket ? "Edit" : "Create"}/>
     </form>
   );
 };
