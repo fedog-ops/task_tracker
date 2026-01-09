@@ -11,6 +11,7 @@ import { upsertTicket } from "@/app/tickets/actions/upsert-ticket";
 import { SubmitButton } from "@/components/form/submit-button";
 import { FieldError } from "@/components/form/field-error";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils/to-action-state";
+import { toast } from "sonner";
 
 type TicketUpsertFormProps = {
   ticket?: Ticket;
@@ -23,11 +24,15 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
   );
 
   useActionFeedback(actionState, {
-    onSuccess: ({ actionState }) => { 
-      console.log(actionState.message); 
+    onSuccess: ({ actionState }) => {
+      if (actionState.message) {
+        toast.success(actionState.message);
+      }
     },
-    onError: ({ actionState }) => { 
-      console.error(actionState.message); 
+    onError: ({ actionState }) => {
+      if (actionState.message) {
+        toast.error(actionState.message);
+      }
     },
   });
 
@@ -60,7 +65,6 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
 
       <SubmitButton label={ticket ? "Edit" : "Create"} />
 
-      {actionState.message}
     </form>
   );
 };
